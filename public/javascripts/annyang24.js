@@ -39,6 +39,7 @@
   // Check browser support
   // This is done as early as possible, to make it as fast as possible for unsupported browsers
   if (!SpeechRecognition) {
+    console.log('SpeechRecognition == null');
     return null;
   }
 
@@ -47,7 +48,7 @@
   var callbacks = { start: [], error: [], end: [], result: [], resultMatch: [], resultNoMatch: [], errorNetwork: [], errorPermissionBlocked: [], errorPermissionDenied: [] };
   var autoRestart;
   var lastStartedAt = 0;
-  var debugState = false;
+  var debugState = true;
   var debugStyle = 'font-weight: bold; color: #00f;';
   var pauseListening = false;
   var isListening = false;
@@ -72,6 +73,7 @@
   // This method receives an array of callbacks to iterate over, and invokes each of them
   var invokeCallbacks = function(callbacks) {
     var args = Array.prototype.slice.call(arguments, 1);
+    console.log('fun invokeCallbacks%c'+args, debugStyle);
     callbacks.forEach(function(callback) {
       callback.callback.apply(callback.context, args);
     });
@@ -95,6 +97,7 @@
   };
 
   var parseResults = function(results) {
+    console.log('fun parseResults: %c' + results, debugStyle);
     invokeCallbacks(callbacks.result, results);
     var commandText;
     // go over each of the 5 results and alternative results received (we've set maxAlternatives to 5 above)
@@ -184,6 +187,9 @@
 
       recognition.onerror   = function(event) {
         invokeCallbacks(callbacks.error);
+
+        console.log('onerror: %c' + event.error, debugStyle);
+
         switch (event.error) {
         case 'network':
           invokeCallbacks(callbacks.errorNetwork);
