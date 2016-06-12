@@ -23,7 +23,11 @@ gulp.task('watch', () => {
 
 gulp.task('default', ['watch', 'run']);
 
-gulp.task('electron', ['clean'], () => {
+gulp.task('electron_build', ['clean'], () => {
 	return gulp.src(['main.js', './views/**/**', './public/**/**'])
 		.pipe(gulp.dest('build/electron'));
 });
+
+gulp.task('electron', ['electron_build'], shell.task([
+	'electron build/electron/main.js'
+]));
