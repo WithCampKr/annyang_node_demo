@@ -4,9 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var main = require('../app');
+var app = main.app;
+var http = main.http;
 var debug = require('debug')('sample_annyang:server');
-var http = require('http');
 
 /**
  * Get port from environment and store in Express.
