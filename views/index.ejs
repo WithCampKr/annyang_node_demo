@@ -7,16 +7,14 @@
 	if (annyang) {
 	  // Let's define a command.
 	  var commands = {
-	    'hello': function() { 
-	    	$('#messages').append($('<li>').text('speech: ' + 'hello'));
-	    	console.log('hello');
+	    'hello': function(text) { 
+	    	$('#messages').append($('<li>').text('speech: ' + text));
+	    	console.log('speech:' + text);
 	    }
 	  };
 
-	  // Add our commands to annyang
+	  annyang.debug(true);
 	  annyang.addCommands(commands);
-
-	  // Start listening.
 	  annyang.start();
 	}
 	</script>
@@ -39,6 +37,12 @@
       });
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
+
+        if (annyang) {
+        	let commands = [];
+        	commands.push(msg)
+        	annyang.trigger(commands);
+        }
       });
 	</script>
   </body>
