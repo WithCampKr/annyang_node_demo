@@ -60,9 +60,8 @@ app.use(function(err, req, res, next) {
 
 // socket.io
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
   });
 });
 

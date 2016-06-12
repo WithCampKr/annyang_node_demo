@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<title><%= title %></title>
   	<script src="javascripts/annyang24.js"></script>
 	<script>
 	if (annyang) {
 	  // Let's define a command.
 	  var commands = {
 	    'hello': function() { 
+	    	$('#messages').append($('<li>').text('speech: ' + 'hello'));
 	    	console.log('hello');
 	    }
 	  };
@@ -18,15 +20,26 @@
 	  annyang.start();
 	}
 	</script>
-
-	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-	<script>
-	  var socket = io();
-	</script>
-    <title><%= title %></title>
     <link rel='stylesheet' href='stylesheets/style.css' />
   </head>
   <body>
-    <p>Say 'hello'</p>
+  	<ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+	<script>
+	  var socket = io();
+	  $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+      socket.on('chat message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+      });
+	</script>
   </body>
 </html>
