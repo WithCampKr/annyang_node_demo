@@ -48,7 +48,7 @@
   var callbacks = { start: [], error: [], end: [], result: [], resultMatch: [], resultNoMatch: [], errorNetwork: [], errorPermissionBlocked: [], errorPermissionDenied: [] };
   var autoRestart;
   var lastStartedAt = 0;
-  var debugState = true;
+  var debugState = false;
   var debugStyle = 'font-weight: bold; color: #00f;';
   var pauseListening = false;
   var isListening = false;
@@ -100,12 +100,15 @@
     console.log('fun parseResults: %c' + results, debugStyle);
     invokeCallbacks(callbacks.result, results);
     var commandText;
+
+    // emit all messages to client
     // go over each of the 5 results and alternative results received (we've set maxAlternatives to 5 above)
     for (var i = 0; i<results.length; i++) {
       // the text recognized
       commandText = results[i].trim();
       if (debugState) {
         console.log('Speech recognized: %c'+commandText, debugStyle);
+        commandsList[0].callback.apply(this, results);
       }
 
       // try and match recognized text to one of the commands on the list
