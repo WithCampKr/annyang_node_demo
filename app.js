@@ -61,7 +61,7 @@ app.use(function(err, req, res, next) {
 // socket.io
 io.on('connection', (socket) => {
   socket.on('chat message', function(msg){
-    io.emit('chat message', {msg: msg});
+    socket.broadcast.emit('chat message', {msg: msg});
   });
 });
 
